@@ -1,21 +1,24 @@
-### Setup MicroK8s and Juju
+#! /bin/sh
 
-Most up to date instruction can be found at <https://juju.is/docs/microk8s-cloud>
+# Install MicroK8s
 
-But a quick summary can be found here:
+sudo snap install microk8s --classic
+sudo usermod -a -G microk8s $USER
+sudo su - $USER
+microk8s status --wait-ready
+microk8s.enable dns storage
 
-    $ sudo snap install microk8s --classic
-    $ sudo usermod -a -G microk8s $USER
-    $ sudo su - $USER
-    $ microk8s status --wait-ready
-    $ microk8s.enable dns storage
-    $ sudo snap install juju --classic
-    $ juju bootstrap microk8s micro
-    $ juju add-model training
+# Install Charmcraft
 
-### Install Charmcraft
+sudo snap install charmcraft --beta
 
-[Charmcraft](https://github.com/canonical/charmcraft) is our build and publish
-tool for Operators.
+# Install Juju
 
-    $ sudo snap install charmcraft --beta
+sudo snap install juju --classic
+
+# Deploy the operator lifecycle manager
+
+juju bootstrap microk8s micro
+juju add-model training
+
+# https://juju.is/docs/microk8s-cloud
